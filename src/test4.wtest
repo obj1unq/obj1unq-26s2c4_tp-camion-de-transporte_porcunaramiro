@@ -1,0 +1,36 @@
+
+import camion.*
+import cosas.*
+
+describe "Pruebas de las nuevas funcionalidades del Camión" {
+
+  method initialize() {
+    camion.cargar(knightRider)
+    camion.cargar(bumblebee)
+  }
+
+  test "tieneAlgoQuePesaEntre retorna true para un rango que incluye a Knight Rider (500kg)" {
+    assert.that(camion.tieneAlgoQuePesaEntre(400, 600))
+  }
+
+  test "tieneAlgoQuePesaEntre retorna false si ninguna carga está en el rango" {
+    assert.notThat(camion.tieneAlgoQuePesaEntre(100, 300))
+  }
+
+  test "cosaMasPesada devuelve el objeto Bumblebee (800kg)" {
+    assert.equals(bumblebee, camion.cosaMasPesada())
+  }
+
+  test "totalBultos calcula la suma correcta de bultos" {
+
+    assert.equals(3, camion.totalBultos())
+
+    paqueteDeLadrillos.cantidadDeLadrillos(150)
+    camion.cargar(paqueteDeLadrillos)
+
+
+    assert.equals(5, camion.totalBultos())
+  }
+
+
+}

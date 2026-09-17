@@ -1,0 +1,34 @@
+
+import cosas.*
+
+describe "Pruebas de Las Cosas del Camión" {
+
+
+  test "Paquete de 950 ladrillos: pesa 2000 kg y peligrosidad es 40" {
+    paqueteDeLadrillos.cantidadDeLadrillos(950)
+
+    assert.equals(2000, paqueteDeLadrillos.peso())
+    assert.equals(40, paqueteDeLadrillos.nivelPeligrosidad())
+  }
+
+  test "Paquete de 1020 ladrillos: pesa 2250 kg y peligrosidad es 29" {
+    paqueteDeLadrillos.cantidadDeLadrillos(1020)
+
+   
+    assert.equals(2250, paqueteDeLadrillos.peso())
+    assert.equals(29, paqueteDeLadrillos.nivelPeligrosidad())
+  }
+
+  test "Contenedor portuario con Knight Rider y Bumblebee en auto" {
+
+    bumblebee.transformar()
+    contenedorPortuario.agregarCosa(knightRider)
+    contenedorPortuario.agregarCosa(bumblebee)
+
+
+
+    assert.equals(1400, contenedorPortuario.peso())
+    assert.equals(15, contenedorPortuario.nivelPeligrosidad())
+  }
+
+}

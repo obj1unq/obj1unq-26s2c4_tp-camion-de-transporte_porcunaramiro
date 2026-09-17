@@ -1,0 +1,87 @@
+
+import camion.*
+
+object caja {
+  method peso() = 400
+  method nivelPeligrosidad() = 5
+}
+
+object bidon {
+  method peso() = 1000
+  method nivelPeligrosidad() = 30
+}
+
+object bomba {
+  method peso() = 200
+  method nivelPeligrosidad() = 80
+}
+
+object transformador {
+  method peso() = 2000
+  method nivelPeligrosidad() = 50
+}
+
+describe "Pruebas del Camión de Transporte" {
+
+
+  test "Cargar exitosamente una cosa dentro del límite de peso" {
+    camion.cargar(caja)
+    assert.that(camion.cosas().contains(caja))
+    assert.equals(1400, camion.pesoTotal())
+  }
+
+  test "Error al cargar una cosa que excede el peso máximo permitido (2.5 t)" {
+    camion.cargar(bidon) 
+    
+    assert.throwsException({ camion.cargar(transformador) })
+    assert.notThat(camion.cosas().contains(transformador))
+  }
+
+
+  test "Descargar exitosamente una cosa previamente cargada" {
+    camion.cargar(caja)
+    camion.descargar(caja)
+    assert.notThat(camion.cosas().contains(caja))
+    assert.equals(1000, camion.pesoTotal())
+  }
+
+  test "Error al intentar descargar una cosa que no estaba cargada" {
+    assert.throwsException({ camion.descargar(bomba) })
+  }
+
+  test "pesoTotal calcula la tara de 1000 kg más la carga agregada" {
+    camion.cargar(caja)  
+    camion.cargar(bomba) 
+    assert.equals(1600, camion.pesoTotal())
+  }
+
+  test "excedidoDePeso indica false si está dentro del límite máximo" {
+    camion.cargar(bidon) 
+    assert.notThat(camion.excedidoDePeso())
+  }
+
+  test "objetosPeligrosos retorna los objetos que superan el nivel indicado" {
+    camion.cargar(caja)  
+    camion.cargar(bidon) 
+    camion.cargar(bomba) 
+
+    assert.equals({bidon, bomba}, camion.objetosPeligrosos(10)) 
+  }
+
+  test "objetosMasPeligrososQue retorna los objetos con mayor peligrosidad que una cosa dada" {
+    camion.cargar(caja)  
+    camion.cargar(bidon) 
+    camion.cargar(bomba) 
+
+    assert.equals([bomba], camion.objetosMasPeligrososQue(bidon))
+  }
+
+  test "puedeCircularEnRuta valida que ninguna carga supere el nivel máximo permitido" {
+    camion.cargar(caja)  
+    camion.cargar(bidon) 
+
+    assert.that(camion.puedeCircularEnRuta(40))
+
+    assert.notThat(camion.puedeCircularEnRuta(20))
+  }
+}
